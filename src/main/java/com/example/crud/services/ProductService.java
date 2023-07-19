@@ -22,10 +22,15 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 	
-	public void save(ProductDTO dto) {
+	public Product save(ProductDTO dto) {
 		
 		Product product = new Product(dto);
 		
-		productRepository.save(product);
+		return productRepository.save(product);
+	}
+	
+	public Product update(Product product) {
+		
+		return productRepository.save(product);
 	}
 }

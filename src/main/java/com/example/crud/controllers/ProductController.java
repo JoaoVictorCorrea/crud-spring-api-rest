@@ -3,9 +3,9 @@ package com.example.crud.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,18 +25,22 @@ public class ProductController {
 	
 	@GetMapping
 	public List<Product> getAllProducts() {
-		
+	
 		return productService.findAll();
 	}
 	
 	@PostMapping
-	public ResponseEntity createProduct(@RequestBody @Valid ProductDTO dto) {
+	public Product createProduct(@RequestBody @Valid ProductDTO dto) {
 		
 		System.out.println(dto.getName());
 		System.out.println(dto.getPrice());
 		
-		productService.save(dto);
+		return productService.save(dto);
+	}
+	
+	@PutMapping
+	public Product updateProduct(@RequestBody @Valid Product product) {
 		
-		return ResponseEntity.ok().build();
+		return productService.update(product);
 	}
 }
