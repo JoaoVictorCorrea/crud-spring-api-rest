@@ -2,6 +2,8 @@ package com.example.crud.entities;
 
 import java.util.Objects;
 
+import com.example.crud.dtos.ProductDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +26,12 @@ public class Product {
 	private double price;
 	
 	public Product() {}
+	
+	public Product(ProductDTO dto) {
+		
+		this.name = dto.getName();
+		this.price = dto.getPrice();
+	}
 
 	public Product(Long id, @NotNull String name, @NotNull double price) {
 		this.id = id;
