@@ -1,6 +1,7 @@
 package com.example.crud.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ public class ProductService {
 		return productRepository.findAll();
 	}
 	
+	@Transactional
 	public Product save(ProductDTO dto) {
 		
 		Product product = new Product(dto);
@@ -29,8 +31,20 @@ public class ProductService {
 		return productRepository.save(product);
 	}
 	
-	public Product update(Product product) {
+	@Transactional
+	public Optional<Product> update(Product product) {
 		
-		return productRepository.save(product);
+		Optional<Product> optionalProduct = productRepository.findById(product.getId());
+		
+		if(optionalProduct.isPresent())
+			productRepository.save(product);
+		
+		return optionalProduct;
+	}
+	
+	@Transactional
+	public void delete(Long id) {
+		
+		productRepository.deleteById(id);
 	}
 }

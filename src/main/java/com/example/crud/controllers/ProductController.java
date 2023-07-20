@@ -3,7 +3,10 @@ package com.example.crud.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,23 +27,37 @@ public class ProductController {
 	private ProductService productService;
 	
 	@GetMapping
-	public List<Product> getAllProducts() {
+	public ResponseEntity<List<Product>> getAllProducts() {
 	
-		return productService.findAll();
+		var result = productService.findAll();
+		
+		return ResponseEntity.ok(result);
 	}
 	
 	@PostMapping
-	public Product createProduct(@RequestBody @Valid ProductDTO dto) {
+	public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductDTO dto) {
 		
 		System.out.println(dto.getName());
 		System.out.println(dto.getPrice());
 		
-		return productService.save(dto);
+		var result = productService.save(dto);
+		
+		return ResponseEntity.ok(result);
 	}
 	
 	@PutMapping
-	public Product updateProduct(@RequestBody @Valid Product product) {
+	public ResponseEntity<Product> updateProduct(@RequestBody @Valid Product product) {
 		
-		return productService.update(product);
+		var result = productService.update(product);
+		
+		return (result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build());
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
+		
+		productService.delete(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 }
