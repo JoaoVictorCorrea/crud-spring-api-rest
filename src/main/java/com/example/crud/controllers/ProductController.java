@@ -17,6 +17,7 @@ import com.example.crud.dtos.ProductDTO;
 import com.example.crud.entities.Product;
 import com.example.crud.services.ProductService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -50,7 +51,10 @@ public class ProductController {
 		
 		var result = productService.update(product);
 		
-		return (result.isPresent() ? ResponseEntity.ok(result.get()) : ResponseEntity.notFound().build());
+		if(result.isPresent()) 	
+			return ResponseEntity.ok(result.get());
+		else 
+			throw new EntityNotFoundException();
 	}
 	
 	@DeleteMapping("/{id}")
